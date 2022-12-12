@@ -306,8 +306,8 @@ func NewDeleteNumMethod(qsTypeName, structTypeName string) DeleteNumMethod {
 		constRetMethod:     newConstRetMethod("(int64, error)"),
 		constBodyMethod: newConstBodyMethod(
 			strings.Join([]string{
-				"db := errorutils.WrapQuerySetError(qs.db.Delete(&" + structTypeName + "{}" + "))",
-				"return db.RowsAffected, db.Error",
+				"db := qs.db.Delete(&" + structTypeName + "{}" + ")",
+				"return db.RowsAffected, errorutils.WrapQuerySetError(db.Error)",
 			}, "\n"),
 		),
 	}
@@ -331,8 +331,8 @@ func NewDeleteNumUnscopedMethod(qsTypeName, structTypeName string) DeleteNumUnsc
 		constRetMethod:     newConstRetMethod("(int64, error)"),
 		constBodyMethod: newConstBodyMethod(
 			strings.Join([]string{
-				"db := errorutils.WrapQuerySetError(qs.db.Unscoped().Delete(&" + structTypeName + "{}" + "))",
-				"return db.RowsAffected, db.Error",
+				"db := qs.db.Unscoped().Delete(&" + structTypeName + "{}" + ")",
+				"return db.RowsAffected, errorutils.WrapQuerySetError(db.Error)",
 			}, "\n"),
 		),
 	}
