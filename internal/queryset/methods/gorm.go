@@ -67,7 +67,7 @@ type gormErroredMethod struct {
 
 // GetBody returns body of method
 func (m gormErroredMethod) GetBody() string {
-	return "return " + m.callGormMethod.GetBody() + ".Error"
+	return "return errorutils.WrapQuerySetError(" + m.callGormMethod.GetBody() + ".Error)"
 }
 
 func newGormErroredMethod(name, args, varName string) gormErroredMethod {

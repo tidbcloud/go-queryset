@@ -88,11 +88,11 @@ const qsCode = `
 		}
 		if err := db.Model(o).Updates(u).Error; err != nil {
 			if err == gorm.ErrRecordNotFound {
-				return err
+				return errorutils.WrapQuerySetError(err)
 			}
 
-			return fmt.Errorf("can't update {{ .StructName }} %v fields %v: %s",
-				o, fields, err)
+			return errorutils.WrapQuerySetError(fmt.Errorf("can't update {{ .StructName }} %v fields %v: %s",
+				o, fields, err))
 		}
 
 		return nil

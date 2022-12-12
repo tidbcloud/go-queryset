@@ -66,7 +66,7 @@ func NewUpdaterUpdateMethod(updaterTypeName string) UpdaterUpdateMethod {
 	return UpdaterUpdateMethod{
 		namedMethod:       newNamedMethod("Update"),
 		baseUpdaterMethod: newBaseUpdaterMethod(updaterTypeName),
-		constBodyMethod:   newConstBodyMethod("return u.db.Updates(u.fields).Error"),
+		constBodyMethod:   newConstBodyMethod("return errorutils.WrapQuerySetError(u.db.Updates(u.fields).Error)"),
 	}
 }
 
@@ -88,7 +88,7 @@ func NewUpdaterUpdateNumMethod(updaterTypeName string) UpdaterUpdateNumMethod {
 		constBodyMethod: newConstBodyMethod(
 			strings.Join([]string{
 				"db := u.db.Updates(u.fields)",
-				"return db.RowsAffected, db.Error",
+				"return db.RowsAffected, errorutils.WrapQuerySetError(db.Error)",
 			}, "\n"),
 		),
 	}
