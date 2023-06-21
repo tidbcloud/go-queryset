@@ -77,3 +77,10 @@ func TestColumnNameSetInTag(t *testing.T) {
 	assert.Equal(t, fName, info.Name)
 	assert.Equal(t, typeNamedString.String(), info.TypeName)
 }
+
+func TestSkipConventionFields(t *testing.T) {
+	t.Parallel()
+
+	assert.Nil(t, genFieldInfo(newTf("CreatedAt", typeString, "")))
+	assert.NotNil(t, genFieldInfo(newTf("foo", typeString, "")))
+}

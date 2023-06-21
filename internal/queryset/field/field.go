@@ -93,7 +93,19 @@ func parseTagSetting(tags reflect.StructTag) map[string]string {
 	return setting
 }
 
+// Selectively skip code generation for fields in conventions
+// Need to skip the generation since they're already generated whether set in
+// models or not.
+// Convention fields: https://gorm.io/docs/conventions.html
+var conventionFields = map[string]struct{}{
+	"CreatedAt": {},
+	"UpdatedAt": {},
+}
+
 func (g InfoGenerator) GenFieldInfo(f Field) *Info {
+	if _, exist := conventionFields[f.Name()]; exist {
+		return nil
+	}
 	tagSetting := parseTagSetting(f.Tag())
 	if tagSetting["-"] != "" { // skipped by tag field
 		return nil
