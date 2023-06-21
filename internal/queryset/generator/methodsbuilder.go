@@ -150,15 +150,5 @@ func (b methodsBuilder) Build() []methods.Method {
 		b.buildQuerySetFieldMethods(f).buildUpdaterFieldMethods(f)
 	}
 
-	// deduplication
-	seen := make(map[string]struct{})
-	ret := []methods.Method{}
-	for _, m := range b.ret {
-		if _, exist := seen[m.GetMethodName()]; exist {
-			continue
-		}
-		seen[m.GetMethodName()] = struct{}{}
-	}
-
-	return ret
+	return b.ret
 }
