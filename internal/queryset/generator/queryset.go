@@ -64,7 +64,12 @@ func doesNeedToGenerateQuerySet(doc *ast.CommentGroup) bool {
 
 func genStructFieldInfos(s parser.ParsedStruct, types *types.Package) (ret []field.Info) {
 	g := field.NewInfoGenerator(types)
+	seen := map[string]struct{}{}
 	for _, f := range s.Fields {
+		if _, exist := seen[f.Name()]; exist {
+			continue
+		}
+		seen[f.Name()] = struct{}{}
 		fi := g.GenFieldInfo(f)
 		if fi == nil {
 			continue
