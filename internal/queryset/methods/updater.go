@@ -1,9 +1,5 @@
 package methods
 
-import (
-	"strings"
-)
-
 // baseUpdaterMethod
 type baseUpdaterMethod struct {
 	structMethod
@@ -86,10 +82,8 @@ func NewUpdaterUpdateNumMethod(updaterTypeName string) UpdaterUpdateNumMethod {
 		baseUpdaterMethod: newBaseUpdaterMethod(updaterTypeName),
 		constRetMethod:    newConstRetMethod("(int64, error)"),
 		constBodyMethod: newConstBodyMethod(
-			strings.Join([]string{
-				"db := u.db.Updates(u.fields)",
-				"return db.RowsAffected, errorutils.WrapQuerySetError(db.Error)",
-			}, "\n"),
+			`db := u.db.Updates(u.fields)
+		return db.RowsAffected, errorutils.WrapQuerySetError(db.Error)`,
 		),
 	}
 }
